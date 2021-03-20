@@ -7,16 +7,26 @@
         <link href="styles.css" rel="stylesheet">
     </head>
     <body>
-        <main>
-            <div>
-                <h1> Welcome to QUIZ APP</h1>
-                <div>
-                    <p> Test your knowledge, tease your brain a little and learn something new in the process</p>
-                </div>
+      <main>
+        <div class="main-container">
+          <h1> Welcome to QUIZ APP</h1>
+          <div>
+            <p> Test your general knowledge by answering these few questions, tease your brain a little and learn something new in the process.</p>
+          </div>
+          <button id="start-btn" class="btn">START</button>
+        </div>
+        <div class="quiz-container hide">
+          <div class="question"></div>
+            <div class="choices">
+              <ul>
+                <li>A.</li>
+                <li>B.</li>
+                <li>C.</li>
+                <li>D.</li>
+              </ul>
+              <button id="next" class="btn">Next</button>
             </div>
-            <div class="quiz-container">
-
-            </div>
+          </div>
         </main>
     </body>
 </html>
