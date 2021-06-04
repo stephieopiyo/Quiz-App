@@ -1,32 +1,57 @@
-<!DOCTYPE htm>
+<!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0 shrink-to-fit=no">
-        <title>Quiz App</title>
-        <link href="styles.css" rel="stylesheet">
-    </head>
-    <body>
-      <main>
-        <div class="main-container">
-          <h1> Welcome to QUIZ APP</h1>
-          <div>
-            <p> Test your general knowledge by answering these few questions, tease your brain a little and learn something new in the process.</p>
-          </div>
-          <button id="start-btn" class="btn">START</button>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0 shrink-to-fit=no">
+  <title>Quiz App</title>
+  <link href="styles.css" rel="stylesheet"> 
+</head>
+
+<body>
+  <main>
+    <!-- Main container -->
+    <div class="main-container">
+      <div class="title">
+        <h1> Welcome to QUIZ APP</h1>
+      </div>
+      <p> Test your computer knowledge by answering these few questions, tease your brain a little and learn something
+        new in the process.</p>
+      <div class="sub-title">
+        <h2>Rules of the Quiz</h2>
+      </div>
+      <ol class="rules">
+        <li>Once you answer a question, you cannot change the answer.</li>
+        <li>Each question is timed; 30 seconds.</li>
+        <li>Once the time is up, you cannot answer the question.</li>
+        <li>You can only exit the quiz after completion</li>
+      </ol>
+      <button id="start-btn" class="btn start">Start Quiz</button>
+    </div>
+    <!-- Quiz Container -->
+    <div class="quiz-container hide">
+      <div class="quiz-header">
+        <div class="quiz-title">Quiz App</div>
+        <div class="quiz-timer">
+          <div class="time-text">Time Left</div>
+          <div class="time-sec">30</div>
         </div>
-        <div class="quiz-container hide">
-          <div class="question"></div>
-            <div class="choices">
-              <ul>
-                <li>A.</li>
-                <li>B.</li>
-                <li>C.</li>
-                <li>D.</li>
-              </ul>
-              <button id="next" class="btn">Next</button>
-            </div>
-          </div>
-        </main>
-    </body>
+      </div>
+      <div class="quiz-section">
+        <div class="question">How old are you?</div>
+        <div class="choices">
+          <ul>
+            <li>21 years</li>
+            <li>30 years</li>
+            <li>25 years</li>
+            <li>50 years</li>
+          </ul>
+          <button class="btn next">Next Question</button>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script src="main.js"></script>
+</body>
+
 </html>
