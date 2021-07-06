@@ -1,51 +1,118 @@
 'use strict';
-const startbtn = document.querySelector('.start');
-const nextbtn = document.querySelector('.next');
-let timer = document.querySelector('.timer');
-let displayQuiz = document.querySelector('.hide');
-let quizSection = document.querySelector('.quiz-section');
-let mainContainer = document.querySelector('.main-container');
+const startbtn = document.querySelector(".start");
+const nextbtn = document.querySelector(".next");
+let qn = document.querySelector(".question");
+let timeText = document.querySelector(".time-text");
+let timeSec = document.querySelector(".time-sec");
+let displayQuiz = document.querySelector(".hide");
+let quizSection = document.querySelector(".quiz-section");
+let mainContainer = document.querySelector(".main-container");
+let totalQuestions = document.querySelector(".total-qns");
+let questionNumber = 1;
+let questionCount = 0;
+let userScore = 0;
+let counter = 0;
 
-function startQuiz(){
-    startbtn.addEventListener('click', function() {
-        mainContainer = mainContainer.classList.add("hide");
-        displayQuiz = displayQuiz.classList.remove("hide");
-         
-    });
+
+const startQuiz = () => {
+  startbtn.addEventListener("click", () => {
+    mainContainer = mainContainer.classList.add("hide");
+    displayQuiz = displayQuiz.classList.remove("hide");
+    startTimer(30);
+  });
 }
 startQuiz();
 
-function getQuestions(){
-    let api = "https://opentdb.com/api.php?amount=15&category=18&type=multiple";
+const getQuestions = () => {
+  let api = "https://opentdb.com/api.php?amount=15&category=18&type=multiple";
 
-    fetch(api) 
-    .then(function(response){
-      let data = response.json();
-      return data;
-    })
-    .then(function(data){ 
+  fetch(api)
+    .then((response) => response.json())
+    .then((data) => {
+      data = data.results;
       displayQuestions(data);
     })
     .catch(error => console.log(error));
 }
-getQuestions();
-const startTimer = (time) => {
 
+getQuestions();
+
+const displayQuestions = (data) => {
+  const [{ question, correct_answer, incorrect_answers }] = data;
+  let questions = data.map(obj => obj.question);
+  questionCount = questions.length;
+  let answers = [correct_answer, ...incorrect_answers];
+
+  quizSection.innerHTML = `
+  <div class="question">
+    <span>${questionNumber}</span>. 
+    ${question}
+  </div>
+  <div class="choices">
+    <ul>
+      <li>${answers[0]}</li>
+      <li>${answers[1]}</li>
+      <li>${answers[2]}</li>
+      <li>${answers[3]}</li>
+    </ul>
+  </div>`;
+  totalQuestions.innerHTML = `
+  <span><p>${questionNumber} of ${questionCount} Questions</p></span>
+  `;
+
+  
+  const options = document.querySelectorAll(".choices ul li");
+  
+  shuffleAnswers(answers);
+  currentQuestion(questions);
+  checkCorrectAnswer(options, correct_answer);
 }
 
-//work in progress
-function displayQuestions(data){
-    console.log(data);
-    /*quizSection.innerHTML += `
-    <div class="question">${question}</div>
-      <div class="choices">
-        <ol type="A">
-          <li>${correct_answer}</li>
-          <li>${incorrect_answers[0]}</li>
-          <li>${incorrect_answers[1]}</li>
-          <li>${incorrect_answers[2]}</li>
-        </ol>
-        <button class="btn next">Next Question</button>
-      </div>
-      `;*/ 
+const shuffleAnswers = (array) => {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
+  }
+  return array;
+}
+
+const currentQuestion = (arr) =>  {
+  for (let i = 0; i < arr.length; i++) {
+    questionNumber = arr[i] + 1;
+    return questionNumber;
+  }
+}
+
+const checkCorrectAnswer = (arr, correct) => {
+  arr.forEach(item => {
+    item.addEventListener("click", (e) => {
+      clearInterval(counter);
+      let selected = e.target;
+      if(selected.textContent == correct) {
+        selected.style.background = "rgb(99, 243, 99)";
+        userScore += 1;
+      }
+    });
+  });
+}
+
+const startTimer = (time) => {
+  counter = setInterval(timer, 1000);
+  function timer() {
+    timeSec.textContent = time;
+    time--;
+    if (time < 0) {
+      timeText.textContent = "Time Up";
+      clearTimeout(counter);
+      nextQuestion();
+    } 
+  }
+}
+
+const nextQuestion = () => {
+  nextbtn.addEventListener("click", (e) => {
+    e.preventDefault();
+  });
 }
