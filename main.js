@@ -12,6 +12,7 @@ let questionNumber = 1;
 let questionCount = 0;
 let userScore = 0;
 let counter = 0;
+let index = 0;
 
 
 const startQuiz = () => {
@@ -66,6 +67,7 @@ const displayQuestions = (data) => {
   shuffleAnswers(answers);
   currentQuestion(questions);
   checkCorrectAnswer(options, correct_answer);
+  
 }
 
 const shuffleAnswers = (array) => {
@@ -93,7 +95,10 @@ const checkCorrectAnswer = (arr, correct) => {
       if(selected.textContent == correct) {
         selected.style.background = "rgb(99, 243, 99)";
         userScore += 1;
+      } else {
+        selected.style.background = "rgb(247, 54, 54)";
       }
+      item.style.pointerEvents = "none";
     });
   });
 }
@@ -111,8 +116,13 @@ const startTimer = (time) => {
   }
 }
 
-const nextQuestion = () => {
+const nextQuestion = (questions) => {
   nextbtn.addEventListener("click", (e) => {
-    e.preventDefault();
+   if(questionNumber < questionCount) {
+     index = questionNumber -  1;
+     return index;
+   }
+   displayQuestions(questions[index]);
   });
 }
+
