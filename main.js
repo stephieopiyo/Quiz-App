@@ -1,12 +1,14 @@
 'use strict';
 const startbtn = document.querySelector(".start");
 const nextbtn = document.querySelector(".next");
+const retry = document.querySelector(".try-again");
 let qn = document.querySelector(".question");
 let timeText = document.querySelector(".time-text");
 let timeSec = document.querySelector(".time-sec");
-let displayQuiz = document.querySelector(".hide");
+let displayQuiz = document.querySelector(".quiz-container");
 let quizSection = document.querySelector(".quiz-section");
 let mainContainer = document.querySelector(".main-container");
+let resultsContainer = document.querySelector(".results-container");
 let totalQuestions = document.querySelector(".total-qns");
 let questionNumber = 1;
 let questionCount = 0;
@@ -137,5 +139,12 @@ const calculateScores = () => {
 }
 
 const showResult = () => {
+  resultsContainer.classList.remove("hide");
+  displayQuiz.classList.add("hide");  
+}
 
+const tryAgain = () => {
+   retry.addEventListener("click", () => {
+     window.location.reload();
+   });
 }
