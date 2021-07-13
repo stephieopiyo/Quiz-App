@@ -13,6 +13,7 @@ let questionCount = 0;
 let userScore = 0;
 let counter = 0;
 let index = 0;
+let questions = [];
 
 
 const startQuiz = () => {
@@ -29,21 +30,34 @@ const getQuestions = () => {
 
   fetch(api)
     .then((response) => response.json())
-    .then((data) => {
-      data = data.results;
-      displayQuestions(data);
+    .then((loadedQuestions) => {
+      questions = loadedQuestions.results.map(loadedQuestion => {
+        const quiz = {
+          question: loadedQuestion.question,
+          correct_answer: loadedQuestion.correct_answer
+        };
+
+        const answers = [loadedQuestion.correct_answer, ...loadedQuestion.incorrect_answers];
+        shuffleArray(answers);
+
+        answers.forEach((option, index) => {
+          quiz["option" + (index + 1)] = option;
+        });
+
+        return quiz;
+      });
+      displayQuestions(questions);
+      nextQuestion(questions);
+      
     })
     .catch(error => console.log(error));
 }
 
 getQuestions();
 
-const displayQuestions = (data) => {
-  const [{ question, correct_answer, incorrect_answers }] = data;
-  let questions = data.map(obj => obj.question);
+const displayQuestions = (questions) => {
+  const [{ question, correct_answer, option1, option2, option3, option4 }] = questions;
   questionCount = questions.length;
-  let answers = [correct_answer, ...incorrect_answers];
-
   quizSection.innerHTML = `
   <div class="question">
     <span>${questionNumber}</span>. 
@@ -51,26 +65,23 @@ const displayQuestions = (data) => {
   </div>
   <div class="choices">
     <ul>
-      <li>${answers[0]}</li>
-      <li>${answers[1]}</li>
-      <li>${answers[2]}</li>
-      <li>${answers[3]}</li>
+      <li>${option1}</li>
+      <li>${option2}</li>
+      <li>${option3}</li>
+      <li>${option4}</li>
     </ul>
   </div>`;
   totalQuestions.innerHTML = `
   <span><p>${questionNumber} of ${questionCount} Questions</p></span>
   `;
 
-  
   const options = document.querySelectorAll(".choices ul li");
-  
-  shuffleAnswers(answers);
+
   currentQuestion(questions);
   checkCorrectAnswer(options, correct_answer);
-  
 }
 
-const shuffleAnswers = (array) => {
+const shuffleArray = (array) => {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     const temp = array[i];
@@ -80,7 +91,7 @@ const shuffleAnswers = (array) => {
   return array;
 }
 
-const currentQuestion = (arr) =>  {
+const currentQuestion = (arr) => {
   for (let i = 0; i < arr.length; i++) {
     questionNumber = arr[i] + 1;
     return questionNumber;
@@ -98,7 +109,6 @@ const checkCorrectAnswer = (arr, correct) => {
       } else {
         selected.style.background = "rgb(247, 54, 54)";
       }
-      item.style.pointerEvents = "none";
     });
   });
 }
@@ -112,17 +122,20 @@ const startTimer = (time) => {
       timeText.textContent = "Time Up";
       clearTimeout(counter);
       nextQuestion();
-    } 
+    }
   }
 }
 
 const nextQuestion = (questions) => {
-  nextbtn.addEventListener("click", (e) => {
-   if(questionNumber < questionCount) {
-     index = questionNumber -  1;
-     return index;
-   }
-   displayQuestions(questions[index]);
+  nextbtn.addEventListener("click", () => {
+   
   });
 }
 
+const calculateScores = () => {
+
+}
+
+const showResult = () => {
+
+}
