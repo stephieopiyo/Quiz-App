@@ -10,11 +10,12 @@ let quizSection = document.querySelector(".quiz-section");
 let mainContainer = document.querySelector(".main-container");
 let resultsContainer = document.querySelector(".results-container");
 let totalQuestions = document.querySelector(".total-qns");
-let questionNumber = 1;
+let scores = document.querySelector(".score");
+let questionNumber = 0;
 let questionCount = 0;
 let userScore = 0;
 let counter = 0;
-let index = 0;
+let currentIndex = 0;
 let questions = [];
 
 
@@ -48,29 +49,29 @@ const getQuestions = () => {
 
         return quiz;
       });
-      displayQuestions(questions);
+      displayQuestions(questions[currentIndex]);
+      currentQuestion(questions);
       nextQuestion(questions);
-      
     })
     .catch(error => console.log(error));
 }
 
 getQuestions();
 
-const displayQuestions = (questions) => {
-  const [{ question, correct_answer, option1, option2, option3, option4 }] = questions;
+const displayQuestions = (q) => {
+  questionNumber =  currentIndex + 1;
   questionCount = questions.length;
   quizSection.innerHTML = `
   <div class="question">
     <span>${questionNumber}</span>. 
-    ${question}
+    ${q.question}
   </div>
   <div class="choices">
     <ul>
-      <li>${option1}</li>
-      <li>${option2}</li>
-      <li>${option3}</li>
-      <li>${option4}</li>
+      <li>${q.option1}</li>
+      <li>${q.option2}</li>
+      <li>${q.option3}</li>
+      <li>${q.option4}</li>
     </ul>
   </div>`;
   totalQuestions.innerHTML = `
@@ -79,8 +80,7 @@ const displayQuestions = (questions) => {
 
   const options = document.querySelectorAll(".choices ul li");
 
-  currentQuestion(questions);
-  checkCorrectAnswer(options, correct_answer);
+  checkCorrectAnswer(options, q.correct_answer); 
 }
 
 const shuffleArray = (array) => {
@@ -130,17 +130,24 @@ const startTimer = (time) => {
 
 const nextQuestion = (questions) => {
   nextbtn.addEventListener("click", () => {
+    if(currentIndex !== questionCount - 1) {
+      currentIndex++;
+    displayQuestions(questions[currentIndex]);
+    startTimer(30);
+    } else {
+      showResult();
+      
+    }
    
   });
 }
 
-const calculateScores = () => {
-
-}
-
 const showResult = () => {
-  resultsContainer.classList.remove("hide");
-  displayQuiz.classList.add("hide");  
+  clearInterval(counter);
+  scores.innerHTML = "YOU SCORED" + userScore + "POINTS";
+  resultsContainer = resultsContainer.classList.remove("hide");
+  displayQuiz = displayQuiz.classList.add("hide");  
+  tryAgain();
 }
 
 const tryAgain = () => {
@@ -148,3 +155,4 @@ const tryAgain = () => {
      window.location.reload();
    });
 }
+

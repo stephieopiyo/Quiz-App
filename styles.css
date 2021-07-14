@@ -20,7 +20,8 @@ body {
 }
 
 .main-container,
-.quiz-container {
+.quiz-container,
+.results-container {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -47,7 +48,8 @@ body {
   display: none;
 }
 
-.start {
+.start,
+.try-again {
   color: #fff;
   background-color: rgba(179, 14, 201, 0.904);
   border-radius: 5px;
@@ -192,4 +194,11 @@ ul {
 
 .wrong {
   background: rgb(247, 54, 54);
+}
+
+.complete-icon {
+  font-weight: bold;
+  font-size: 35px;
+  text-align: center;
+  color:rgb(237, 67, 243);
 }
