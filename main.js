@@ -100,7 +100,20 @@ const currentQuestion = (arr) => {
   }
 }
 
+/*const disable = (options) => {
+  options.forEach(option => {
+    option.style.pointerEvents = "none";
+  });
+}
+
+const enable = (options) => {
+  options.forEach(option => {
+    option.style.pointerEvents = "click";
+  });
+}
+*/
 const checkCorrectAnswer = (arr, correct) => {
+  const choices = document.querySelectorAll(".choices ul li");
   arr.forEach(item => {
     item.addEventListener("click", (e) => {
       clearInterval(counter);
@@ -110,6 +123,12 @@ const checkCorrectAnswer = (arr, correct) => {
         userScore += 1;
       } else {
         selected.style.background = "rgb(247, 54, 54)";
+        for(let i=0; i<choices.length; i++){
+          if(choices[i].textContent == correct){
+            choices[i].style.background = "rgb(99, 243, 99)";
+          }
+        }
+        
       }
     });
   });
@@ -144,9 +163,9 @@ const nextQuestion = (questions) => {
 
 const showResult = () => {
   clearInterval(counter);
-  scores.innerHTML = "YOU SCORED" + userScore + "POINTS";
+  quizSection = quizSection.classList.add("hide");  
+  scores.innerHTML = "YOU SCORED" + " :" +  userScore + "POINTS";
   resultsContainer = resultsContainer.classList.remove("hide");
-  displayQuiz = displayQuiz.classList.add("hide");  
   tryAgain();
 }
 
