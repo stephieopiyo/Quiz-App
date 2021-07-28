@@ -100,18 +100,12 @@ const currentQuestion = (arr) => {
   }
 }
 
-/*const disable = (options) => {
-  options.forEach(option => {
-    option.style.pointerEvents = "none";
+const disable = (arr) => {
+  arr.forEach(item => {
+    item.style.pointerEvents = "none";
   });
 }
 
-const enable = (options) => {
-  options.forEach(option => {
-    option.style.pointerEvents = "click";
-  });
-}
-*/
 const checkCorrectAnswer = (arr, correct) => {
   const choices = document.querySelectorAll(".choices ul li");
   arr.forEach(item => {
@@ -121,12 +115,14 @@ const checkCorrectAnswer = (arr, correct) => {
       if(selected.textContent == correct) {
         selected.style.background = "rgb(99, 243, 99)";
         userScore += 1;
+        disable(choices);
       } else {
         selected.style.background = "rgb(247, 54, 54)";
         for(let i=0; i<choices.length; i++){
           if(choices[i].textContent == correct){
             choices[i].style.background = "rgb(99, 243, 99)";
           }
+          disable(choices);
         }
         
       }
